@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Script de ejecución rápida para la variante base.
 # Lee el archivo de ejemplo A y lo envía a stdin del analizador.
+# Nombre: Juan David Fernández Hernández
+# Fecha: 22/04/2026
+# Materia: Lenguajes de Interfaz
 
 set -euo pipefail
 

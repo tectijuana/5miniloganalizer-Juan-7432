@@ -1,45 +1,56 @@
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a44bb0d7-30f9-4fff-95bf-f08277476255" />
 
 
-# Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make)
 
-Práctica universitaria orientada a estudiantes principiantes para reforzar fundamentos de:
-- Ensamblador **ARM64 (AArch64 Linux)**,
-- uso de **syscalls Linux** sin libc,
-- automatización con **Bash**,
-- y flujo de trabajo con **GitHub Classroom**.
+
+# Practica 4.2 Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make)
+
+# Datos 
+
+- Nombre: Juan David Fernández Hernández 
+- Fecha: 22/04/2026
+- Materia: Lenguajes de interfaz
+- Docente: Rene Solis Reyes
 
 ---
 
-## 1) Enunciado formal de la práctica
+## Introducción
 
-Implemente un analizador de logs de servidor en ARM64 Assembly que reciba por `stdin` una secuencia de códigos HTTP (un entero por línea), y procese la información según la variante asignada por el docente.
+Los sistemas modernos de cómputo en la nube generan continuamente registros (*logs*) que permiten monitorear el estado de servicios, detectar fallas y activar alertas ante eventos críticos.
 
-La versión base proporcionada (Variante A) ya compila y ejecuta, y cuenta:
-- códigos de éxito **2xx**,
-- errores de cliente **4xx**,
-- errores de servidor **5xx**.
+En esta práctica se desarrollará un módulo simplificado de análisis de logs, implementado en **ARM64 Assembly**, inspirado en tareas reales de monitoreo utilizadas en sistemas cloud, observabilidad y administración de infraestructura.
 
-Ejecución esperada:
+El programa procesará códigos de estado HTTP suministrados mediante entrada estándar (stdin):
 
-```bash
+```bash id="y1gcmc"
 cat logs.txt | ./analyzer
 ```
 
 ---
 
-## 2) Objetivos de aprendizaje
+## Objetivo general
 
-Al finalizar esta práctica, el estudiante será capaz de:
-1. Compilar y enlazar un programa ARM64 sin C ni libc.
-2. Invocar syscalls Linux (`read`, `write`, `exit`).
-3. Parsear enteros desde flujo de bytes (`stdin`).
-4. Diseñar lógica condicional para análisis de códigos HTTP.
-5. Validar resultados con scripts de prueba reproducibles.
+Diseñar e implementar, en lenguaje ensamblador ARM64, una solución para procesar registros de eventos y detectar condiciones definidas según la variante asignada.
 
 ---
+## Objetivos específicos
 
-## 3) Estructura del repositorio
+Aplicar:
+
+* programación en ARM64 bajo Linux
+* manejo de registros
+* direccionamiento y acceso a memoria
+* instrucciones de comparación
+* estructuras iterativas en ensamblador
+* saltos condicionales
+* uso de syscalls Linux
+* compilación con GNU Make
+* control de versiones con GitHub Classroom
+
+Estos temas se alinean con contenidos clásicos de flujo de control, herramientas GNU, manejo de datos y convenciones de programación en ensamblador.   
+
+---
+## Estructura del repositorio
 
 ```text
 cloud-log-analyzer/
@@ -63,7 +74,7 @@ cloud-log-analyzer/
 
 ---
 
-## 4) Requisitos técnicos
+## Requisitos técnicos
 
 - Sistema objetivo: **AWS Ubuntu 24 ARM64**.
 - Arquitectura: **AArch64 Linux**.
@@ -75,7 +86,7 @@ cloud-log-analyzer/
 
 ---
 
-## 5) Flujo sugerido en GitHub Classroom
+## Flujo sugerido en GitHub Classroom
 
 1. El docente crea la actividad en GitHub Classroom.
 2. Cada estudiante acepta su repositorio individual.
@@ -89,27 +100,27 @@ cloud-log-analyzer/
 
 ---
 
-## 6) Instrucciones de uso en AWS Ubuntu 24 ARM64
+## Instrucciones de uso en AWS Ubuntu 24 ARM64
 
-### 6.1 Compilar
+### 1 Compilar
 
 ```bash
 make
 ```
 
-### 6.2 Ejecutar ejemplo base
+### 2 Ejecutar ejemplo base
 
 ```bash
 make run
 ```
 
-### 6.3 Ejecutar pruebas
+### 3 Ejecutar pruebas
 
 ```bash
 make test
 ```
 
-### 6.4 Limpiar artefactos
+### 4 Limpiar artefactos
 
 ```bash
 make clean
@@ -117,42 +128,24 @@ make clean
 
 ---
 
-## 7) Variantes de práctica
+## Variantes Asignada
 
-- **A**: contar 2xx, 4xx, 5xx.
+
 - **B**: encontrar código más frecuente.
-- **C**: detectar primer 503.
-- **D**: detectar 3 errores consecutivos.
-- **E**: calcular health score.
-
-Detalles de asignación docente: ver `instructor/VARIANTES.md`.
 
 ---
 
-## 8) Rúbrica propuesta
+## Evidencia en Asciinema
 
-Toda solución debe tener:
-1. Encabezado del programador
-2. Pseudocódigo
-3. Código ARM64 comentado
+- Link: 
 
-| Criterio | Ponderación |
-|---|---:|
-| Correctitud funcional de la variante asignada | 40% |
-| Dominio técnico de ARM64 + syscalls | 25% |
-| Pruebas automatizadas y reproducibilidad | 20% |
-| Calidad de documentación y claridad de código | 15% |
 
-### Criterios de descuento sugeridos
-- No compila en ARM64: hasta -40%.
-- Usa C/libc: evaluación inválida por incumplir restricción.
-- Sin evidencia de pruebas: hasta -20%. Utiliar Asciinema (con su nombre y preferente), o tambien LOOM.com compartido link
+## Conclusión 
 
 ---
 
-## 9) Notas para estudiantes
+## Autoreflexión
 
-- Lean y entiendan el pseudocódigo al inicio de `src/analyzer.s`.
-- Mantengan comentarios técnicos claros y breves.
-- Trabajen incrementalmente: primero parser, luego lógica de variante, luego pruebas.
-- Si trabajan en host x86_64, se recomienda emulación con `qemu-aarch64` o compilar/ejecutar directamente en AWS ARM64.
+---
+
+

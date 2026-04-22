@@ -1,8 +1,8 @@
 /*
-Autor: Equipo docente (base para estudiantes)
-Curso: Arquitectura de Computadoras / Ensamblador ARM64
+Autor: Juan David Fernández Hernández
+Curso: Lenguajes de Interfaz
 Práctica: Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make)
-Fecha: 20 de abril de 2026
+Fecha: 22 de abril de 2026
 Descripción: Lee códigos HTTP desde stdin (uno por línea), clasifica 2xx/4xx/5xx
              y muestra un reporte en español usando únicamente syscalls Linux.
 */

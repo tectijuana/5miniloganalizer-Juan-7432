@@ -1,3 +1,6 @@
+# Nombre: Juan David Fernández Hernández 
+# Fecha: 22/04/2026
+# Materia: Lenguajes de interfaz 
 # Makefile de la práctica Mini Cloud Log Analyzer
 # Comentarios en español para facilitar la comprensión a estudiantes principiantes.
 

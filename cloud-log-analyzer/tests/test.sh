@@ -1,3 +1,6 @@
+# Nombre: Juan David Fernández Hernández 
+# Fecha: 22/04/2026
+# Materia: Lenguajes de Interfaz
 #!/usr/bin/env bash
 # Pruebas automáticas para la variante base (conteo 2xx/4xx/5xx).
 

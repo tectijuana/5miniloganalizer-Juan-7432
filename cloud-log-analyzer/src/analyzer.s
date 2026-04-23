@@ -1,10 +1,9 @@
 /*
-Autor: Equipo docente (base para estudiantes)
-Curso: Arquitectura de Computadoras / Ensamblador ARM64
-Práctica: Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make)
-Fecha: 20 de abril de 2026
-Descripción: Lee códigos HTTP desde stdin (uno por línea), clasifica 2xx/4xx/5xx
-             y muestra un reporte en español usando únicamente syscalls Linux.
+Autor: Juan David Fernández Hernández
+Curso: Lenguajes de Interfaz
+Práctica: Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make) - Variante B
+Fecha: 22 de abril de 2026
+Descripción: Descripción: Determina el código HTTP más frecuente.
 */
 
 /*
@@ -35,22 +34,17 @@ TODO (extensión para estudiantes):
     .align 4
 buffer:         .skip 4096
 num_buf:        .skip 32      // Buffer para imprimir enteros en texto
+counts: .skip 2400   // codigo en http que indica veces que aparece valor
 
 .section .data
 msg_titulo:         .asciz "=== Mini Cloud Log Analyzer ===\n"
-msg_2xx:            .asciz "Éxitos 2xx: "
-msg_4xx:            .asciz "Errores 4xx: "
-msg_5xx:            .asciz "Errores 5xx: "
+msg_resultado:      .asciz "Codigo mas frecuente: "
 msg_fin_linea:      .asciz "\n"
 
 .section .text
 .global _start
 
 _start:
-    // Contadores principales
-    mov x19, #0                  // exitos_2xx
-    mov x20, #0                  // errores_4xx
-    mov x21, #0                  // errores_5xx
 
     // Estado del parser
     mov x22, #0                  // numero_actual
@@ -106,7 +100,7 @@ fin_numero:
     cbz x23, reiniciar_numero
 
     mov x0, x22
-    bl clasificar_codigo
+    bl incrementar_contador
 
 reiniciar_numero:
     mov x22, #0
@@ -117,7 +111,7 @@ fin_lectura:
     // EOF con número pendiente (sin '\n' final)
     cbz x23, imprimir_reporte
     mov x0, x22
-    bl clasificar_codigo
+    bl incrementar_contador
 
 imprimir_reporte:
     // Encabezado
@@ -125,32 +119,16 @@ imprimir_reporte:
     add x0, x0, :lo12:msg_titulo
     bl write_cstr
 
-    // "Éxitos 2xx: " + valor + "\n"
-    adrp x0, msg_2xx
-    add x0, x0, :lo12:msg_2xx
-    bl write_cstr
-    mov x0, x19
-    bl print_uint
-    adrp x0, msg_fin_linea
-    add x0, x0, :lo12:msg_fin_linea
+    // Mensaje
+    adrp x0, msg_resultado
+    add x0, x0, :lo12:msg_resultado
     bl write_cstr
 
-    // "Errores 4xx: " + valor + "\n"
-    adrp x0, msg_4xx
-    add x0, x0, :lo12:msg_4xx
-    bl write_cstr
-    mov x0, x20
+    // Buscar máximo
+    bl buscar_max
     bl print_uint
-    adrp x0, msg_fin_linea
-    add x0, x0, :lo12:msg_fin_linea
-    bl write_cstr
 
-    // "Errores 5xx: " + valor + "\n"
-    adrp x0, msg_5xx
-    add x0, x0, :lo12:msg_5xx
-    bl write_cstr
-    mov x0, x21
-    bl print_uint
+    // Salto de línea
     adrp x0, msg_fin_linea
     add x0, x0, :lo12:msg_fin_linea
     bl write_cstr
@@ -166,42 +144,67 @@ salida_error:
     svc #0
 
 // -----------------------------------------------------------------------------
-// clasificar_codigo(x0 = codigo_http)
-// Incrementa el contador correspondiente: 2xx, 4xx o 5xx.
+// Función encargada de incremento de contador y recuento
+// incrementar_contador(x0 = codigo_http)
 // -----------------------------------------------------------------------------
-clasificar_codigo:
-    cmp x0, #200
-    b.lt clasificar_fin
-    cmp x0, #299
-    b.gt revisar_4xx
-    add x19, x19, #1
-    b clasificar_fin
-
-revisar_4xx:
-    cmp x0, #400
-    b.lt clasificar_fin
-    cmp x0, #499
-    b.gt revisar_5xx
-    add x20, x20, #1
-    b clasificar_fin
-
-revisar_5xx:
-    cmp x0, #500
-    b.lt clasificar_fin
+incrementar_contador:
     cmp x0, #599
-    b.gt clasificar_fin
-    add x21, x21, #1
+    b.gt fin_inc
 
-clasificar_fin:
+    adrp x1, counts
+    add x1, x1, :lo12:counts
+
+    lsl x2, x0, #2
+    add x1, x1, x2
+
+    ldr w3, [x1]
+    add w3, w3, #1
+    str w3, [x1]
+
+fin_inc:
     ret
 
 // -----------------------------------------------------------------------------
-// write_cstr(x0 = puntero a string terminado en '\0')
-// Imprime una cadena C usando syscall write.
+// buscar_max()
+// retorna x0 = código más frecuente
+// -----------------------------------------------------------------------------
+buscar_max:
+    mov x1, #0          // i
+    mov x2, #0          // max_count
+    mov x3, #0          // max_code
+
+    adrp x4, counts
+    add x4, x4, :lo12:counts
+
+loop_max:
+    cmp x1, #600
+    b.ge fin_max
+
+    lsl x5, x1, #2
+    add x6, x4, x5
+
+    ldr w7, [x6]
+
+    cmp x7, x2
+    b.le siguiente
+
+    mov x2, x7
+    mov x3, x1
+
+siguiente:
+    add x1, x1, #1
+    b loop_max
+
+fin_max:
+    mov x0, x3
+    ret
+
+// -----------------------------------------------------------------------------
+// write_cstr
 // -----------------------------------------------------------------------------
 write_cstr:
-    mov x9, x0                    // guardar puntero inicial
-    mov x10, #0                   // longitud = 0
+    mov x9, x0
+    mov x10, #0
 
 wc_len_loop:
     ldrb w11, [x9, x10]
@@ -210,24 +213,24 @@ wc_len_loop:
     b wc_len_loop
 
 wc_len_done:
-    mov x1, x9                    // buffer
-    mov x2, x10                   // tamaño
-    mov x0, #STDOUT_FD            // fd
+    mov x1, x9
+    mov x2, x10
+    mov x0, #STDOUT_FD
     mov x8, #SYS_write
     svc #0
     ret
 
 // -----------------------------------------------------------------------------
-// print_uint(x0 = entero sin signo)
-// Convierte a ASCII en base 10 e imprime con syscall write.
+// print_uint
 // -----------------------------------------------------------------------------
 print_uint:
-    // Caso especial: número 0
     cbnz x0, pu_convertir
+
     adrp x1, num_buf
     add x1, x1, :lo12:num_buf
     mov w2, #'0'
     strb w2, [x1]
+
     mov x0, #STDOUT_FD
     mov x2, #1
     mov x8, #SYS_write
@@ -237,16 +240,17 @@ print_uint:
 pu_convertir:
     adrp x12, num_buf
     add x12, x12, :lo12:num_buf
-    add x12, x12, #31             // escribir de atrás hacia adelante
+    add x12, x12, #31
+
     mov w13, #0
-    strb w13, [x12]               // terminador no indispensable, útil para depurar
+    strb w13, [x12]
 
     mov x14, #10
-    mov x15, #0                   // contador de dígitos
+    mov x15, #0
 
 pu_loop:
-    udiv x16, x0, x14             // x16 = x0 / 10
-    msub x17, x16, x14, x0        // x17 = x0 - (x16*10) => residuo
+    udiv x16, x0, x14
+    msub x17, x16, x14, x0
     add x17, x17, #'0'
 
     sub x12, x12, #1
@@ -256,7 +260,6 @@ pu_loop:
     mov x0, x16
     cbnz x0, pu_loop
 
-    // write(STDOUT_FD, x12, x15)
     mov x1, x12
     mov x2, x15
     mov x0, #STDOUT_FD

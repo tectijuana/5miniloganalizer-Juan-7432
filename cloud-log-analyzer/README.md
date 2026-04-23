@@ -20,7 +20,7 @@ En esta práctica se desarrollará un módulo simplificado de análisis de logs,
 El programa procesará códigos de estado HTTP suministrados mediante entrada estándar (stdin):
 
 ```bash id="y1gcmc"
-cat logs.txt | ./analyzer
+cat data/logs_B.txt | ./analyzer
 ```
 
 ---
@@ -130,6 +130,23 @@ make clean
 - **B**: encontrar código más frecuente.
 
 ---
+## Diseño de la solución
+
+Para resolver la variante B (código más frecuente), se implementó un arreglo de contadores en memoria (`counts`).
+
+Cada vez que se lee un código HTTP desde la entrada estándar:
+- Se convierte de ASCII a entero.
+- Se utiliza como índice dentro del arreglo.
+- Se incrementa su frecuencia.
+
+Al finalizar la lectura:
+- Se recorre el arreglo completo.
+- Se identifica el código con mayor frecuencia.
+- Se imprime el resultado.
+
+Este enfoque permite una solución eficiente en tiempo O(n), donde n es el número de registros.
+
+---
 
 ## Evidencia en Asciinema 🎥
 
@@ -143,8 +160,3 @@ En esta práctica se desarrolló un analizador de logs en lenguaje ensamblador A
 Además, se comprendió la importancia de diseñar estructuras eficientes a bajo nivel, como el uso de arreglos para el conteo de frecuencias, lo cual simula escenarios reales en sistemas de monitoreo en la nube. Esta práctica permitió apreciar cómo tareas comunes en lenguajes de alto nivel requieren un manejo más detallado y preciso en ensamblador, fortaleciendo la comprensión del funcionamiento interno de los sistemas.
 
 ---
-
-
-
-
-

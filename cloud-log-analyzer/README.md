@@ -137,7 +137,7 @@ make clean
 
 ## Evidencia en Asciinema
 
-- Link: 
+- Link: https://asciinema.org/a/9SqfpVBnO9n04Om8 
 
 
 ## Conclusión 

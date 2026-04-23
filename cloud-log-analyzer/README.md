@@ -1,11 +1,8 @@
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a44bb0d7-30f9-4fff-95bf-f08277476255" />
 
-
-
-
 # Practica 4.2 Mini Cloud Log Analyzer (Bash + ARM64 + GNU Make)
 
-# Datos 
+## Datos 
 
 - Nombre: Juan David Fernández Hernández 
 - Fecha: 22/04/2026
@@ -14,7 +11,7 @@
 
 ---
 
-## Introducción
+# Introducción
 
 Los sistemas modernos de cómputo en la nube generan continuamente registros (*logs*) que permiten monitorear el estado de servicios, detectar fallas y activar alertas ante eventos críticos.
 
@@ -28,14 +25,14 @@ cat logs.txt | ./analyzer
 
 ---
 
-## Objetivo general
+# Objetivo general
 
 Diseñar e implementar, en lenguaje ensamblador ARM64, una solución para procesar registros de eventos y detectar condiciones definidas según la variante asignada.
 
 ---
-## Objetivos específicos
+# Objetivos específicos
 
-Aplicar:
+## Aplicar:
 
 * programación en ARM64 bajo Linux
 * manejo de registros
@@ -50,7 +47,7 @@ Aplicar:
 Estos temas se alinean con contenidos clásicos de flujo de control, herramientas GNU, manejo de datos y convenciones de programación en ensamblador.   
 
 ---
-## Estructura del repositorio
+# Estructura del repositorio
 
 ```text
 cloud-log-analyzer/
@@ -74,7 +71,7 @@ cloud-log-analyzer/
 
 ---
 
-## Requisitos técnicos
+# Requisitos técnicos
 
 - Sistema objetivo: **AWS Ubuntu 24 ARM64**.
 - Arquitectura: **AArch64 Linux**.
@@ -86,7 +83,7 @@ cloud-log-analyzer/
 
 ---
 
-## Flujo sugerido en GitHub Classroom
+# Flujo sugerido en GitHub Classroom
 
 1. El docente crea la actividad en GitHub Classroom.
 2. Cada estudiante acepta su repositorio individual.
@@ -100,7 +97,7 @@ cloud-log-analyzer/
 
 ---
 
-## Instrucciones de uso en AWS Ubuntu 24 ARM64
+# Instrucciones de uso en AWS Ubuntu 24 ARM64
 
 ### 1 Compilar
 
@@ -125,7 +122,6 @@ make test
 ```bash
 make clean
 ```
-
 ---
 
 ## Variantes Asignada
@@ -135,17 +131,20 @@ make clean
 
 ---
 
-## Evidencia en Asciinema
+## Evidencia en Asciinema 🎥
 
 - Link: https://asciinema.org/a/9SqfpVBnO9n04Om8 
 
 
 ## Conclusión 
 
+En esta práctica se desarrolló un analizador de logs en lenguaje ensamblador ARM64, capaz de procesar códigos HTTP desde la entrada estándar y determinar el código más frecuente. A través de este ejercicio se reforzaron conceptos fundamentales como el manejo de registros, control de flujo, acceso a memoria y uso de llamadas al sistema en Linux.
+
+Además, se comprendió la importancia de diseñar estructuras eficientes a bajo nivel, como el uso de arreglos para el conteo de frecuencias, lo cual simula escenarios reales en sistemas de monitoreo en la nube. Esta práctica permitió apreciar cómo tareas comunes en lenguajes de alto nivel requieren un manejo más detallado y preciso en ensamblador, fortaleciendo la comprensión del funcionamiento interno de los sistemas.
+
 ---
 
-## Autoreflexión
 
----
+
 
 
